@@ -1,0 +1,11 @@
+[project]
+name = "risk-tabular-datasets"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=7.1.0",
+    "mlcroissant>=1.0.22",
+    "ucimlrepo>=0.0.7",
+]
