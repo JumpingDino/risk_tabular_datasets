@@ -1,4 +1,6 @@
+import numpy as np
 import pandas as pd
+
 from ucimlrepo import fetch_ucirepo 
   
 # fetch dataset 
@@ -131,16 +133,23 @@ value_mapping = {
 
 
 df_feat = statlog_german_credit_data['data']['features'].copy()
+df_y = statlog_german_credit_data['data']['targets'].copy()
+# store the raw data
+pd.concat([df_feat, df_y], axis=1).to_csv('../data/raw/raw_german_credit_data.csv', index=False)
+
 df_feat = df_feat.rename(columns=field_mapping, inplace=False)
 
 for col in df_feat:
     if col in value_mapping:
         df_feat[col] = df_feat[col].map(value_mapping[col])
 
-df_y = statlog_german_credit_data['data']['targets'].copy()
+
 df_y.columns = ['target']
 df_y['target'] = df_y['target'].map(value_mapping['target'])
 
 out_df = pd.concat([df_feat, df_y], axis=1)
+
+rng = np.random.default_rng(42)
+out_df['_is_test'] = rng.random(len(out_df)) > 0.75   # 75% train
 
 out_df.to_csv('../data/german_credit_data.csv', index=False)
